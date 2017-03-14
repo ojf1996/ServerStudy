@@ -2,11 +2,37 @@
 #include<sys/types.h>
 #include<netinet/in.h>
 #include<arpa/inet.h>
+#include<pthread.h>
+
+const static int DengLu = 0;  //登录
+const static int ZhuChe = 1;  //注册
+const static int ChuShiLiaoTian = 2; //初始聊天
+const static int FaSongChengGong = 3; //聊天消息发送成功
+const static int FaSongShiBai = 4; //聊天消息发送失败，使用服务器中转
+const static int quit = 5; //退出
+
+
+struct Message
+{
+	int type;
+	char _message[255];
+};
+
+//处理注册事物
+void handleRegister(char* info)
+
+//for connect handling
+void * 
+handleConnect(void * clientSockfd)
+{
+
+}
+
+
 
 int main(int argc, char * argv[])
 {
 	int server_sockfd;
-	int client_cockfd;
 	int len;
 	struct sockaddr_in my_addr;
 	struct sockaddr_in remote_addr;
@@ -18,6 +44,7 @@ int main(int argc, char * argv[])
 	my_addr.sin_port =htons(8000);
 
 	int server_sock = 0;
+	
 	if( (server_sockfd = socket(AF_INET,SOCKET_STREAM,0)) < 0 )
 	{
 		printf("error: create socket fail");
@@ -38,11 +65,6 @@ int main(int argc, char * argv[])
 	}
 
 	while(true){
-		if(client_cockfd = accept(server_sockfd, (struct sockaddr* )&remote_addr, sizeof(remote_addr)) < 0)
-		{
-			printf("error: accpet fail");
-			exit(1);
-		}
-		// 自定义
+		
 	}
 }
