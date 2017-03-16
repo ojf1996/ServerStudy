@@ -23,19 +23,25 @@ int main(int argc, char *argv[])
 	int len;
 
 	//  socket
+	printf("socket\n");
     if ((server_sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
 		printf("error: create socket fail");
 		exit(1);
     }
 
+	// 允许端口立即重用
+	int on = 1;
+	setsockopt(server_sockfd,SOL_SOCKET,SO_REUSEADDR,&on,sizeof(on));
+
     memset(&my_addr, 0, sizeof(my_addr));
     my_addr.sin_family = AF_INET;	 //IPV4
-    my_addr.sin_addr.s_addr = INADDR_ANY; //允许连接到所有本地地址上
+    my_addr.sin_addr.s_addr = htonl(INADDR_ANY); //允许连接到所有本地地址上
     my_addr.sin_port = htons(MYPORT);
 
 
 	// bind
+	printf("bind\n");
     if (bind(server_sockfd, (struct sockaddr *)&my_addr, sizeof(struct sockaddr)) < 0)
     {
 		printf("error: bind fail");
@@ -43,6 +49,7 @@ int main(int argc, char *argv[])
     }
 
 	// listen
+	printf("listen\n");
     if (listen(server_sockfd, BACKLOG) < 0)
     {
 		printf("error: listen fail");
@@ -55,6 +62,8 @@ int main(int argc, char *argv[])
 
 		// accept
 		sin_size = sizeof(struct sockaddr_in);
+
+		printf("accept---\n");
 		if ((client_cockfd = accept(server_sockfd, (struct sockaddr *)& new_addr, &sin_size) ) == -1)
 		{
 		    printf("error: accpet fail");
@@ -69,6 +78,7 @@ int main(int argc, char *argv[])
 		len = recv(client_cockfd,buf,BUFSIZ,0);
 		buf[len] = '\0';
 		printf("recv message: %s \n",buf);
+
 		close(client_cockfd);
 
     }

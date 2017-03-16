@@ -19,8 +19,6 @@ int main(int argc, char *argv[])
     //int server_sockfd;
     int client_sockfd;
     struct sockaddr_in server_addr;
-    struct sockaddr_in new_addr;
-    unsigned int sin_size;
 
     char buf[BUFSIZ] = "hello world from client";
 	int len;
@@ -33,6 +31,7 @@ int main(int argc, char *argv[])
 	}
 
 	//  socket
+	printf("socket\n");
     if ((client_sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
 		printf("error: create socket fail");
@@ -41,9 +40,11 @@ int main(int argc, char *argv[])
 
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;	 //IPV4
-    server_addr.sin_addr.s_addr = INADDR_ANY; //允许连接到所有本地地址上
+//    server_addr.sin_addr.s_addr = INADDR_ANY; //允许连接到所有本地地址上
     server_addr.sin_port = htons(MYPORT);
 
+	printf("inet_pton\n");
+	printf("%s\n",argv[1]);
 	if(inet_pton(AF_INET,argv[1],&server_addr.sin_addr) <= 0)
 	{
 
@@ -51,10 +52,12 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
+
 	// connect
+	printf("connect\n");
 	if( connect(client_sockfd,(struct sockaddr *)&server_addr,sizeof(server_addr)) < 0)
 	{
-			printf("connect error!\n");
+			printf("connect error!Error:%s(error:%d)\n",strerror(errno),errno);
 			exit(1);
 	}
 
@@ -62,6 +65,7 @@ int main(int argc, char *argv[])
 
 	
 	// send
+	printf("send\n");
 	if( send(client_sockfd,buf,strlen(buf), 0) < 0)
 	{
 		printf("send msg error\n");
@@ -69,5 +73,6 @@ int main(int argc, char *argv[])
 	}
 
 
+	printf("close\n");
 	close(client_sockfd);
 }
