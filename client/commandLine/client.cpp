@@ -11,17 +11,13 @@
 #include <arpa/inet.h>
 
 
-const int MYPORT = 8000; 	/*开放的端口号*/
-const int BACKLOG = 5;  	/*指定套接字可以接受的最大未接受客户机请求的数目*/
+const int MYPORT = 8000; 	//开放的端口号
 
 int main(int argc, char *argv[])
 {
-    //int server_sockfd;
+	
     int client_sockfd;
     struct sockaddr_in server_addr;
-
-    char buf[BUFSIZ] = "hello world from client";
-	int len;
 
 
 	if(argc != 2)
@@ -40,7 +36,6 @@ int main(int argc, char *argv[])
 
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;	 //IPV4
-//    server_addr.sin_addr.s_addr = INADDR_ANY; //允许连接到所有本地地址上
     server_addr.sin_port = htons(MYPORT);
 
 	printf("inet_pton\n");
@@ -63,15 +58,19 @@ int main(int argc, char *argv[])
 
 	// 连接成功了，下面开始发送消息
 
-	
-	// send
-	printf("send\n");
-	if( send(client_sockfd,buf,strlen(buf), 0) < 0)
+	char receiveStr[BUFSIZ];
+	char sendStr[BUFSIZ];
+	int len;
+	while((len = read(client_sockfd,receiveStr,BUFSIZ)) > 0)
 	{
-		printf("send msg error\n");
-		exit(0);
-	}
+		printf("server say: %s\n",receiveStr);
+		fgets(sendStr,BUFSIZ,stdin);
+		write(client_sockfd,sendStr,strlen(sendStr));
+		printf("client say: %s\n",sendStr);
 
+		memset(receiveStr,'\0',BUFSIZ);
+		memset(sendStr,'\0',BUFSIZ);
+	}
 
 	printf("close\n");
 	close(client_sockfd);
