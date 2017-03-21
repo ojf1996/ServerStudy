@@ -1,0 +1,10 @@
+package msg
+message info
+{
+	required string id = 1;
+	required int32 type = 2; //type
+	optional string str = 3; //msg
+	required int32 dst = 4;  //destination
+	required int32 src = 5; //source
+	required int64 time = 6; //time from 1970.1.1
+} 
