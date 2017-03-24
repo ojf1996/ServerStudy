@@ -9,7 +9,8 @@
             "taskName": "clean"
         },
         {
-            "taskName": "build",
+            // 这里需要改，server改成与launch.json中的prelaunchtask一样的
+            "taskName": "server",
             "problemMatcher":{
                 "owner":"cpp",
                 "fileLocation":["relative","${workspaceRoot}"],

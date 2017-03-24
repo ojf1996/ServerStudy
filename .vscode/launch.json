@@ -5,15 +5,15 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            // program 改成如此
-            "program": "${workspaceRoot}/build",
+            // 这里需要改，server改成要运行的文件名
+            "program": "${workspaceRoot}/server",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],
             "externalConsole": true,
-            // 添加build
-            "preLaunchTask":"build",
+            // 这里需要改，server改成跟tasks.json中写的task name一致
+            "preLaunchTask":"server",
             "linux": {
                 "MIMode": "gdb",
                 "setupCommands": [
